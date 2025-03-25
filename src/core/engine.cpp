@@ -35,10 +35,10 @@ namespace font {
     TTF_Font *text = nullptr;
 
     bool initialized = false;
-    
+
     void init() {
         if (initialized) return;
-        
+
         initialized = true;
 
         text = TTF_OpenFont((ASSETS_PATH + "fonts/Kenney-Future.ttf").c_str(), 16);
@@ -75,21 +75,19 @@ bool find_assets_path() {
 }
 
 bool Init(const char *title, SDL_Rect window_features, bool fullscreen) {
-
     if (!find_assets_path()) {
         return false;
     }
 
     Uint32 screen_flags = 0;
-
     if (fullscreen) {
         screen_flags |= SDL_WINDOW_FULLSCREEN;
     }
 
-    if (SDL_InitSubSystem(SDL_INIT_EVENTS|SDL_INIT_VIDEO|SDL_INIT_GAMEPAD)) {
+    if (SDL_InitSubSystem(SDL_INIT_EVENTS | SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
         std::clog << "SDL3 initialized!...\n";
 
-        screen = SDL_CreateWindow("Cpp Game Dev", 
+        screen = SDL_CreateWindow("Cpp Game Dev",
                                   window_features.w,
                                   window_features.h, screen_flags);
         if (screen) {
@@ -102,7 +100,6 @@ bool Init(const char *title, SDL_Rect window_features, bool fullscreen) {
         renderer = SDL_CreateRenderer(screen, "");
         if (renderer) {
             std::clog << "Redereer created sucessfully!\n";
-
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         } else {
             std::cerr << "[WARNING!] RENDERER INITIALIZATION FAILED!\n"
@@ -114,26 +111,21 @@ bool Init(const char *title, SDL_Rect window_features, bool fullscreen) {
                                     kDisplaySize.y);
         if (display) {
             std::clog << "Display (render target) created sucessfully!\n";
-            // SDL_SetTextureScaleMode(display, SDL_SCALEMODE_NEAREST);
-
         } else {
-            std::cerr
-                << "[WARNING!] DISPLAY (RENDER TARGET) INITIALIZATION FAILED!\n"
-                << "     [SDL]: " << SDL_GetError() << '\n';
+            std::cerr << "[WARNING!] DISPLAY (RENDER TARGET) INITIALIZATION FAILED!\n"
+                      << "     [SDL]: " << SDL_GetError() << '\n';
         }
 
         interface = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
-            SDL_TEXTUREACCESS_TARGET, kScreenSize.x, kScreenSize.y);
-        
+                                      SDL_TEXTUREACCESS_TARGET, kScreenSize.x,
+                                      kScreenSize.y);
         if (interface) {
-        std::clog << "Interface (render target) created sucessfully!\n";
-        // SDL_SetTextureScaleMode(display, SDL_SCALEMODE_NEAREST);
-
+            std::clog << "Interface (render target) created sucessfully!\n";
         } else {
-        std::cerr
-        << "[WARNING!] INTERFACE (RENDER TARGET) INITIALIZATION FAILED!\n"
-        << "     [SDL]: " << SDL_GetError() << '\n';
+            std::cerr << "[WARNING!] INTERFACE (RENDER TARGET) INITIALIZATION FAILED!\n"
+                      << "     [SDL]: " << SDL_GetError() << '\n';
         }
+
     } else {
         std::cerr << "[WARNING!] SDL3 INITIALIZATION FAILED!\n";
         return false;
